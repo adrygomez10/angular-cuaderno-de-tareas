@@ -1,0 +1,33 @@
+<section class="route-card route-content" aria-labelledby="login-heading">
+  <h2 id="login-heading">Acceso a gestión</h2>
+  <p>Inicia una sesión de demostración para consultar las tareas completadas y eliminadas.</p>
+  <p class="demo-credentials">
+    Usuario <code>{{ demoUsername }}</code> · Contraseña <code>{{ demoPassword }}</code>
+  </p>
+
+  <form class="route-form" (ngSubmit)="signIn()">
+    <label>
+      Usuario
+      <input name="username" autocomplete="username" required [(ngModel)]="username" />
+    </label>
+    <label>
+      Contraseña
+      <input
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        required
+        [(ngModel)]="password"
+      />
+    </label>
+    @if (error()) {
+      <p class="route-error" role="alert">Las credenciales de demostración no coinciden.</p>
+    }
+    <div class="route-actions">
+      <button class="ink-button" type="submit" [disabled]="!username().trim() || !password()">
+        Iniciar sesión
+      </button>
+      <a routerLink="/tareas">Volver a mis tareas</a>
+    </div>
+  </form>
+</section>

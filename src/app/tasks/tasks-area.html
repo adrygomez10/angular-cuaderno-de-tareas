@@ -1,0 +1,15 @@
+<nav class="route-nav" aria-label="Navegación de tareas">
+  <a
+    routerLink="/tareas"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    ariaCurrentWhenActive="page"
+    >Mis tareas</a
+  >
+  <a routerLink="/tareas/nueva" routerLinkActive="active" ariaCurrentWhenActive="page"
+    >Nueva tarea</a
+  >
+  <a routerLink="/tareas/gestion" routerLinkActive="active" ariaCurrentWhenActive="page">Gestión</a>
+</nav>
+
+<router-outlet />

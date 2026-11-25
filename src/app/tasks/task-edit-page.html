@@ -1,0 +1,21 @@
+<section class="route-card route-content" aria-labelledby="task-edit-heading">
+  <h2 id="task-edit-heading">Editar tarea</h2>
+  @if (task(); as selected) {
+    <form class="route-form" (ngSubmit)="save()">
+      <label>
+        Título
+        <input name="title" required [maxlength]="maxTitleLength" [(ngModel)]="draft" />
+      </label>
+      @if (!validTitle()) {
+        <p class="route-error">Escribe al menos {{ minTitleLength }} caracteres.</p>
+      }
+      <div class="route-actions">
+        <button class="ink-button" type="submit" [disabled]="!validTitle()">Guardar cambios</button>
+        <a [routerLink]="['/tareas', selected.id]">Cancelar</a>
+      </div>
+    </form>
+  } @else {
+    <p>No se ha encontrado esa tarea.</p>
+    <a routerLink="/tareas">Volver a mis tareas</a>
+  }
+</section>

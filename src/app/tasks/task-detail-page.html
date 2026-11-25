@@ -1,0 +1,26 @@
+<section class="route-card route-content" aria-labelledby="task-detail-heading">
+  <h2 id="task-detail-heading">Detalle de la tarea</h2>
+  @if (task(); as selected) {
+    <dl class="task-detail">
+      <div>
+        <dt>Título</dt>
+        <dd>{{ selected.title }}</dd>
+      </div>
+      <div>
+        <dt>Estado</dt>
+        <dd>{{ selected.completed ? 'Completada' : 'Pendiente' }}</dd>
+      </div>
+      <div>
+        <dt>Origen</dt>
+        <dd>{{ selected.externalId ? 'JSONPlaceholder' : 'Creada aquí' }}</dd>
+      </div>
+    </dl>
+    <div class="route-actions">
+      <a class="ink-button" [routerLink]="['/tareas', selected.id, 'editar']">Editar tarea</a>
+      <a routerLink="/tareas">Volver a mis tareas</a>
+    </div>
+  } @else {
+    <p>No se ha encontrado esa tarea.</p>
+    <a routerLink="/tareas">Volver a mis tareas</a>
+  }
+</section>

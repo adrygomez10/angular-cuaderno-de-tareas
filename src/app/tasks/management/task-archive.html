@@ -1,0 +1,22 @@
+<section aria-labelledby="archive-heading">
+  <h3 id="archive-heading">{{ trash ? 'Tareas eliminadas' : 'Tareas completadas' }}</h3>
+  <ul class="archive-list">
+    @for (task of visibleTasks(); track task.id) {
+      <li>
+        @if (trash) {
+          <span>{{ task.title }}</span>
+          <button class="ink-button" type="button" (click)="restore(task.id)">Restaurar</button>
+        } @else {
+          <a [routerLink]="['/tareas', task.id]">{{ task.title }}</a>
+          <button class="ink-button" type="button" (click)="reopen(task.id)">
+            Marcar pendiente
+          </button>
+        }
+      </li>
+    } @empty {
+      <li class="archive-empty">
+        {{ trash ? 'La papelera está vacía.' : 'Todavía no hay tareas completadas.' }}
+      </li>
+    }
+  </ul>
+</section>

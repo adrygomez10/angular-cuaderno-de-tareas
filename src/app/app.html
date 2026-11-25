@@ -1,0 +1,78 @@
+<main class="workspace">
+  <header class="page-header">
+    <div class="page-heading">
+      <span class="app-icon" aria-hidden="true">✓</span>
+      <h1>{{ title }}</h1>
+    </div>
+    @if (signedIn()) {
+      <div class="session-status">
+        <span>Sesión de demostración activa</span>
+        <button type="button" (click)="signOut()">Cerrar sesión</button>
+      </div>
+    }
+  </header>
+
+  <div class="workspace-grid">
+    <div id="task-components" class="task-components">
+      @if (componentsVisible()) {
+        <router-outlet />
+      } @else {
+        <section class="route-card hidden-panel" aria-labelledby="hidden-heading">
+          <h2 id="hidden-heading">Componentes ocultos</h2>
+          <p>Vuelve a mostrarlos para ver las tareas que ya has añadido.</p>
+        </section>
+      }
+    </div>
+
+    <aside class="workspace-sidebar" aria-label="Actividad de la lista">
+      <section class="api-panel" aria-labelledby="api-heading">
+        <h2 id="api-heading">Tareas de ejemplo</h2>
+        <p>Trae hasta cinco tareas pendientes de JSONPlaceholder.</p>
+        <button
+          class="ink-button"
+          type="button"
+          (click)="importTasks()"
+          [disabled]="importStatus().state === 'loading'"
+        >
+          {{ importStatus().state === 'loading' ? 'Importando…' : 'Importar tareas' }}
+        </button>
+        <p class="import-status" role="status" [class.error]="importStatus().state === 'error'">
+          {{ importStatus().message }}
+        </p>
+        @if (storageWarning(); as warning) {
+          <p class="error" role="status">{{ warning }}</p>
+        }
+        @if (lastChange(); as change) {
+          <p class="last-change">
+            Último cambio <strong>{{ change }}</strong>
+          </p>
+        }
+      </section>
+
+      <section class="lifecycle-panel" aria-labelledby="lifecycle-heading">
+        <h2 id="lifecycle-heading">Ciclo de vida</h2>
+        <p>Cambia de página u oculta el contenido para ver qué hooks se ejecutan.</p>
+        <button
+          type="button"
+          aria-controls="task-components"
+          [attr.aria-expanded]="componentsVisible()"
+          (click)="toggleComponents()"
+        >
+          {{ componentsVisible() ? 'Ocultar componentes' : 'Mostrar componentes' }}
+        </button>
+
+        @if (lifecycleEvents().length) {
+          <ol class="event-list" aria-label="Hooks recientes">
+            @for (event of lifecycleEvents(); track event.id) {
+              <li>
+                <code>{{ event.hook }}</code>
+                <span class="event-component">{{ event.component }}</span>
+                <span class="event-detail">{{ event.detail }}</span>
+              </li>
+            }
+          </ol>
+        }
+      </section>
+    </aside>
+  </div>
+</main>

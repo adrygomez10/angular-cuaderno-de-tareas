@@ -1,0 +1,50 @@
+<section aria-labelledby="task-list-heading">
+  <div class="list-heading">
+    <h2 id="task-list-heading">Mis tareas</h2>
+    <output aria-label="Total de tareas">
+      {{ tasks().length }} {{ tasks().length === 1 ? 'tarea' : 'tareas' }}
+    </output>
+  </div>
+
+  @if (tasks().length) {
+    <p class="list-status">
+      Pendientes <strong>{{ tasks().length - completedCount() }}</strong> · Completadas
+      <strong>{{ completedCount() }}</strong>
+    </p>
+    <ul>
+      @for (task of tasks(); track task.id) {
+        <li>
+          <label class="task-summary" [class.completed]="task.completed">
+            <input
+              #completion
+              type="checkbox"
+              [checked]="task.completed"
+              (change)="taskUpdated.emit({ id: task.id, completed: completion.checked })"
+            />
+            <span class="task-title">{{ task.title }}</span>
+          </label>
+          <div class="task-actions">
+            <a [routerLink]="['/tareas', task.id]" [attr.aria-label]="'Ver ' + task.title">Ver</a>
+            <a
+              [routerLink]="['/tareas', task.id, 'editar']"
+              [attr.aria-label]="'Editar ' + task.title"
+              >Editar</a
+            >
+            <button
+              type="button"
+              class="remove-button"
+              [attr.aria-label]="'Eliminar ' + task.title"
+              (click)="taskRemoved.emit(task.id)"
+            >
+              Eliminar
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="empty-state">
+      Aún no hay tareas. <a routerLink="/tareas/nueva">Añade la primera</a>.
+    </p>
+  }
+</section>

@@ -1,0 +1,108 @@
+<section aria-labelledby="add-task-heading">
+  <h2 id="add-task-heading">Nueva tarea</h2>
+  <p id="title-requirements" class="requirements">
+    El título debe tener entre {{ minTitleLength }} y {{ maxTitleLength }} caracteres.
+  </p>
+
+  <div class="form-grid">
+    <form
+      #templateElement
+      #templateForm="ngForm"
+      id="template-task-form"
+      aria-labelledby="template-form-heading"
+      (ngSubmit)="submitTemplateTask(templateForm)"
+    >
+      <h3 id="template-form-heading">Formulario de plantilla</h3>
+      <label for="task-title">Título</label>
+      <input
+        #templateInput
+        #templateTitle="ngModel"
+        id="task-title"
+        class="ink-field"
+        name="title"
+        type="text"
+        placeholder="Ej. Repasar Angular"
+        aria-describedby="title-requirements template-title-error"
+        [attr.aria-invalid]="templateTitle.dirty && templateTitle.invalid"
+        required
+        [minlength]="minTitleLength"
+        [maxlength]="maxTitleLength"
+        appTrimmedTaskTitle
+        [(ngModel)]="title"
+      />
+      <p id="template-title-error" class="validation-error" aria-live="polite">
+        @if (templateTitle.dirty && templateTitle.invalid) {
+          {{ titleError(templateTitle) }}
+        }
+      </p>
+      <button
+        class="ink-button"
+        type="submit"
+        [disabled]="!templateForm.valid"
+        (click)="submitFromClick($event, templateElement)"
+      >
+        Añadir tarea
+      </button>
+
+      <p class="title-preview">
+        Vista previa <strong>{{ title() || '—' }}</strong>
+      </p>
+    </form>
+
+    <form
+      #reactiveElement
+      #reactiveFormDirective="ngForm"
+      id="reactive-task-form"
+      aria-labelledby="reactive-form-heading"
+      [formGroup]="reactiveForm"
+      (ngSubmit)="submitReactiveTask(reactiveFormDirective)"
+    >
+      <h3 id="reactive-form-heading">Formulario reactivo</h3>
+      <label for="reactive-task-title">Título</label>
+      <input
+        #reactiveInput
+        id="reactive-task-title"
+        class="ink-field"
+        type="text"
+        placeholder="Ej. Preparar la entrega"
+        aria-required="true"
+        aria-describedby="title-requirements reactive-title-error"
+        [attr.aria-invalid]="reactiveTitle.dirty && reactiveTitle.invalid"
+        [attr.maxlength]="maxTitleLength"
+        formControlName="title"
+      />
+      <p id="reactive-title-error" class="validation-error" aria-live="polite">
+        @if (reactiveTitle.dirty && reactiveTitle.invalid) {
+          {{ titleError(reactiveTitle) }}
+        }
+      </p>
+      <button
+        class="ink-button"
+        type="submit"
+        [disabled]="!reactiveForm.valid"
+        (click)="submitFromClick($event, reactiveElement)"
+      >
+        Añadir tarea
+      </button>
+
+      <dl class="control-states" aria-label="Estado del campo de título reactivo">
+        <div [class.active]="reactiveTitle.pristine">
+          <dt>pristine</dt>
+          <dd>{{ reactiveTitle.pristine ? 'Sí' : 'No' }}</dd>
+        </div>
+        <div [class.active]="reactiveTitle.dirty">
+          <dt>dirty</dt>
+          <dd>{{ reactiveTitle.dirty ? 'Sí' : 'No' }}</dd>
+        </div>
+        <div [class.active]="reactiveTitle.valid">
+          <dt>valid</dt>
+          <dd>{{ reactiveTitle.valid ? 'Sí' : 'No' }}</dd>
+        </div>
+        <div [class.active]="reactiveTitle.invalid">
+          <dt>invalid</dt>
+          <dd>{{ reactiveTitle.invalid ? 'Sí' : 'No' }}</dd>
+        </div>
+      </dl>
+    </form>
+  </div>
+</section>
